@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossa Eternidade | 07.06.25</title>
+    
+    <!-- Fontes de Alta Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,400&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- GSAP & Plugins (A Melhor Biblioteca de Animação do Mundo) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+    <style>
+        /* =========================================
+           1. VARIÁVEIS E RESET
+           ========================================= */
+        :root {
+            --bg-deep: #050505;
+            --bg-light: #111111;
+            --text-main: #f0f0f0;
+            --text-muted: #888888;
+            --gold: #d4af37;
+            --gold-dim: #8a7020;
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Cormorant Garamond', serif;
+            --font-ui: 'Montserrat', sans-serif;
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Cursor customizado ativado */
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* =========================================
+           2. CURSOR PERSONALIZADO
+           ========================================= */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--gold);
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* Hover State for Links/Buttons */
+        body.hovering .cursor-outline {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+        }
+
+        /* =========================================
+           3. ESTRUTURA GERAL
+           ========================================= */
+        section {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Canvas de Fundo (Partículas) */
+        #noise-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.05;
+        }
+
+        /* =========================================
+           4. HERO SECTION (CAPA)
+           ========================================= */
+        .hero {
+            height: 100vh;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+        }
+
+        .hero-bg-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            filter: grayscale(100%) contrast(1.2);
+            z-index: 0;
+            transform: scale(1.1);
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 3;
+            mix-blend-mode: screen;
+        }
+
+        .date-stamp {
+            font-family: var(--font-ui);
+            font-size: 0.9rem;
+            letter-spacing: 8px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            display: inline-block;
+            border-top: 1px solid var(--gold);
+            border-bottom: 1px solid var(--gold);
+            padding: 10px 20px;
+        }
+
+        .main-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 12vw, 10rem);
+            line-height: 0.9;
+            font-weight: 400;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .days-display {
+            font-family: var(--font-ui);
+            font-weight: 200;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+        }
+
+        .days-display span {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 1.4rem;
+            margin: 0 5px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.7;
+            z-index: 10;
+        }
+
+        .scroll-mouse {
+            width: 20px;
+            height: 35px;
+            border: 1px solid #fff;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .scroll-wheel {
+            width: 2px;
+            height: 6px;
+            background: var(--gold);
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scrollWheel 2s infinite;
+        }
+
+        @keyframes scrollWheel {
+            0% { top: 6px; opacity: 1; }
+            100% { top: 18px; opacity: 0; }
+        }
+
+        /* =========================================
+           5. SEÇÃO DE INTRODUÇÃO (SPLIT)
+           ========================================= */
+        .intro-section {
+            background-color: var(--bg-light);
+        }
+
+        .split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .intro-text h2 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 30px;
+            line-height: 1.1;
+        }
+
+        .intro-text p {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .intro-text .highlight {
+            color: #fff;
+            font-style: italic;
+            position: relative;
+        }
+        
+        .intro-text .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--gold);
+        }
+
+        .intro-visual {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+
+        .intro-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: sepia(0.5);
+        }
+
+        /* =========================================
+           6. TIMELINE VERTICAL (LINHA DO TEMPO)
+           ========================================= */
+        .timeline-section {
+            background-color: var(--bg-deep);
+            padding: 150px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 100px;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .timeline-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Linha Central */
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 100px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-date {
+            width: 45%;
+            font-family: var(--font-ui);
+            font-size: 0.9rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 20px;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) .timeline-date {
+            text-align: left;
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 20px;
+            border-left: 2px solid rgba(255,255,255,0.1);
+            padding-left: 30px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            border-left: none;
+            border-right: 2px solid rgba(255,255,255,0.1);
+            padding-left: 0;
+            padding-right: 30px;
+            text-align: right;
+        }
+
+        .timeline-content h3 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .timeline-content p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Ponto Central */
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            background: var(--bg-deep);
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            z-index: 5;
+            transition: background 0.3s;
+        }
+
+        .timeline-item:hover .timeline-dot {
+            background: var(--gold);
+            box-shadow: 0 0 15px var(--gold);
+        }
+
+        /* =========================================
+           7. SEÇÃO DE VALORES (GRID 3D)
+           ========================================= */
+        .values-section {
+            background: var(--bg-light);
+            padding: 150px 0;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .value-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            transition: transform 0.4s var(--ease-out-expo), border-color 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .value-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold);
+        }
+
+        .value-number {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.03);
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            line-height: 1;
+        }
+
+        .value-icon {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .value-card h3 {
+            font-family: var(--font-ui);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .value-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* =========================================
+           8. SEÇÃO DE CITAÇÃO MASSIVA
+           ========================================= */
+        .quote-section {
+            background: url('img3.jpeg') center/cover fixed;
+            height: 80vh;
+            position: relative;
+        }
+
+        .quote-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+        }
+
+        .quote-text {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .quote-text blockquote {
+            font-family: var(--font-body);
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-style: italic;
+            line-height: 1.2;
+            color: #fff;
+            margin-bottom: 30px;
+        }
+
+        .quote-text cite {
+            font-family: var(--font-ui);
+            font-style: normal;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+
+        /* =========================================
+           9. CARTA FINAL
+           ========================================= */
+        .letter-section {
+            background-color: #f4f1ea; /* Tom de papel antigo */
+            color: #2c2c2c;
+            padding: 100px 20px;
+        }
+
+        .letter-paper {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 60px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        /* Detalhes de papel */
+        .letter-paper::before {
+            content: '';
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 1px solid #d4af37;
+            pointer-events: none;
+        }
+
+        .letter-paper h2 {
+            font-family: var(--font-display);
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--gold-dim);
+            margin-bottom: 40px;
+        }
+
+        .letter-content {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            line-height: 2;
+            color: #444;
+        }
+
+        .letter-content p {
+            margin-bottom: 20px;
+        }
+
+        .signature {
+            margin-top: 50px;
+            text-align: right;
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: #000;
+        }
+
+        /* =========================================
+           10. FOOTER
+           ========================================= */
+        footer {
+            background-color: #000;
+            padding: 50px 20px;
+            text-align: center;
+            border-top: 1px solid #222;
+        }
+
+        .footer-logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .footer-copy {
+            font-family: var(--font-ui);
+            font-size: 0.7rem;
+            color: #555;
+            letter-spacing: 2px;
+        }
+
+        /* =========================================
+           11. LOADING SCREEN
+           ========================================= */
+        .loader-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loader-bar-container {
+            width: 200px;
+            height: 2px;
+            background: #222;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-bar {
+            position: absolute;
+            top: 0; left: 0;
+            height: 100%;
+            width: 0%;
+            background: var(--gold);
+            transition: width 0.2s;
+        }
+
+        .loader-percent {
+            font-family: var(--font-ui);
+            font-size: 0.8rem;
+            letter-spacing: 5px;
+            color: #fff;
+        }
+
+        /* =========================================
+           12. RESPONSIVIDADE
+           ========================================= */
+        @media (max-width: 900px) {
+            .split-grid { grid-template-columns: 1fr; }
+            .timeline-line { left: 20px; }
+            .timeline-item, .timeline-item:nth-child(even) { flex-direction: column; align-items: flex-start; padding-left: 50px; }
+            .timeline-date, .timeline-item:nth-child(even) .timeline-date { width: 100%; text-align: left; padding: 0; margin-bottom: 10px; }
+            .timeline-content, .timeline-item:nth-child(even) .timeline-content { width: 100%; text-align: left; padding: 0; border: none; }
+            .timeline-dot { left: 20px; }
+            .hero-bg-img { opacity: 0.2; }
+            .letter-paper { padding: 30px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ELEMENTOS DE CURSOR -->
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+
+    <!-- TELA DE CARREGAMENTO -->
+    <div class="loader-screen" id="loader">
+        <div class="loader-percent" id="loader-text">0%</div>
+        <div class="loader-bar-container">
+            <div class="loader-bar" id="loader-bar"></div>
+        </div>
+    </div>
+
+    <!-- RUÍDO DE FUNDO -->
+    <canvas id="noise-canvas"></canvas>
+
+    <!-- 1. HERO SECTION -->
+    <header class="hero">
+        <img src="img4.jpeg" alt="Luxo Love" class="hero-bg-img">
+        <div class="container hero-content">
+            <span class="date-stamp">07 . 06 . 25</span>
+            <h1 class="main-title">Nossa<br>Jornada</h1>
+            <div class="days-display">
+                JUNTOS HÁ EXATAMENTE<br>
+                <span id="days-counter">0</span> DIAS
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+            </div>
+            <span style="font-family: var(--font-ui); font-size: 0.7rem; letter-spacing: 2px; color: #fff;">SCROLL</span>
+        </div>
+    </header>
+
+    <!-- 2. INTRODUÇÃO -->
+    <section class="intro-section">
+        <div class="container">
+            <div class="split-grid">
+                <div class="intro-text text-left">
+                    <h2>O Início de<br>Tudo</h2>
+                    <p>Nem tudo são flores. O que nós construímos foi muito mais valioso: uma base sólida de respeito e admiração mútua.</p>
+                    <p>O dia 7 de junho foi o ponto de partida, mas cada dia desde então tem sido uma escolha consciente de continuar caminhando juntos.</p>
+                    <p>Como dizem os grandes amores: não é sobre não ter problemas, é sobre ter a certeza de que, <span class="highlight">com você, eu consigo resolver qualquer um.</span></p>
+                </div>
+                <div class="intro-visual">
+                    <img src="img1.jpeg" alt="Abstract Love">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. TIMELINE (LINHA DO TEMPO) -->
+    <section class="timeline-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Nossa História</h2>
+                <p style="color: var(--text-muted); letter-spacing: 2px;">MARCOS IMPORTANTES</p>
+            </div>
+
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+
+                <!-- Item 1 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">JUNHO 2025</div>
+                    <div class="timeline-content">
+                        <div class="timeline-dot"></div>
+                        <h3>O Início</h3>
+                        <p>O dia mais importante da minha vida, um dia entre amigos no shopping assistindo o filme que você tanto queria.</p>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">JULHO 2025</div>
+                    <div class="timeline-content">
+                        <div class="timeline-dot"></div>
+                        <h3>A Descoberta</h3>
+                        <p>Começamos a nos aproximar cada vez mais. Compartilhando os gostos, os medos e os sonhos...</p>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">AGOSTO 2025</div>
+                    <div class="timeline-content">
+                        <div class="timeline-dot"></div>
+                        <h3>A Cumplicidade</h3>
+                        <p>O silêncio confortável. Aquele estágio onde não precisávamos falar para nos entender completamente.</p>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">SETEMBRO 2025</div>
+                    <div class="timeline-content">
+                        <div class="timeline-dot"></div>
+                        <h3>A Supercação</h3>
+                        <p>Enfrentamos os primeiros desafios reais e saímos mais fortes. A parceria foi consolidada.</p>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="timeline-item">
+                    <div class="timeline-date">HOJE</div>
+                    <div class="timeline-content">
+                        <div class="timeline-dot"></div>
+                        <h3>A Eternidade</h3>
+                        <p>Aqui estamos hoje, não como duas pessoas separadas, mas como namorados pronta para o que vier.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. SEÇÃO DE VALORES -->
+    <section class="values-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>O Que Nos Une</h2>
+            </div>
+            <div class="values-grid">
+                <div class="value-card">
+                    <span class="value-number">01</span>
+                    <span class="value-icon">✦</span>
+                    <h3>Respeito</h3>
+                    <p>A base inabalável de tudo. Respeitamos quem somos, nossos limites e nossos sonhos individuais.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-number">02</span>
+                    <span class="value-icon">❤</span>
+                    <h3>Paixão</h3>
+                    <p>A faísca que mantém o fogo aceso. O olhar que diz mais do que mil palavras.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-number">03</span>
+                    <span class="value-icon">∞</span>
+                    <h3>Lealdade</h3>
+                    <p>Saber que, não importa o cenário, estaremos sempre um ao lado do outro.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-number">04</span>
+                    <span class="value-icon">☺</span>
+                    <h3>Riso</h3>
+                    <p>Não levar a vida tão a sério. Rir das nossas bobagens e fazer do outro dia um momento leve.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. CITAÇÃO MASSIVA -->
+    <section class="quote-section">
+        <div class="quote-overlay"></div>
+        <div class="quote-text">
+            <blockquote>
+                "O amor não se trata de olhar um para o outro, mas sim de olharem juntos na mesma direção."
+            </blockquote>
+            <cite>— Antoine de Saint-Exupéry</cite>
+        </div>
+    </section>
+
+    <!-- 6. CARTA FINAL -->
+    <section class="letter-section">
+        <div class="letter-paper">
+            <h2>Para o Amor da Minha Vida</h2>
+            <div class="letter-content">
+                <p>Minha Princesa,</p>
+                <p>Hoje celebramos 8 meses. Obrigado por ser minha rocha. Obrigado por me amar nos meus melhores e piores dias.</p>
+                <p>Desde 7 de junho de 2025, minha vida tem um significado diferente. Você trouxe cor, música e paz para um mundo que muitas vezes parecia cinza.</p>
+                <p>Estou ansioso(a) para o futuro, para os desafios e, principalmente, para as pequenas alegrias que compartilharemos.</p>
+                <p>Te amo hoje, te amo sempre.</p>
+            </div>
+            <div class="signature">
+                Com todo meu amor,<br>
+                Luan Dhony
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <span class="footer-logo">Debora Vezetiv & Luan Dhony</span>
+        <p class="footer-copy">&copy; AMO VOCÊ, MINHA PRINCESA</p>
+    </footer>
+
+    <script>
+        // =========================================
+        // JAVASCRIPT: LÓGICA COMPLETA DO SITE
+        // =========================================
+
+        // 1. REGISTRO DE PLUGINS GSAP
+        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+        // 2. SMOOTH SCROLL (LENIS)
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // 3. LOADER SYSTEM
+        const loader = document.getElementById('loader');
+        const loaderBar = document.getElementById('loader-bar');
+        const loaderText = document.getElementById('loader-text');
+
+        let progress = 0;
+        const loadInterval = setInterval(() => {
+            progress += Math.floor(Math.random() * 5) + 1;
+            if (progress > 100) progress = 100;
+            
+            loaderBar.style.width = progress + '%';
+            loaderText.innerText = progress + '%';
+
+            if (progress === 100) {
+                clearInterval(loadInterval);
+                gsap.to(loader, {
+                    yPercent: -100,
+                    duration: 1.2,
+                    ease: "power4.inOut",
+                    onComplete: initSite
+                });
+            }
+        }, 30);
+
+        function initSite() {
+            // Animação de Entrada do Hero
+            const tl = gsap.timeline();
+
+            tl.from('.date-stamp', { y: 20, opacity: 0, duration: 1, ease: "power3.out" })
+              .from('.main-title', { y: 50, opacity: 0, duration: 1.2, ease: "power3.out" }, "-=0.5")
+              .from('.days-display', { opacity: 0, duration: 1 }, "-=0.5")
+              .from('.hero-bg-img', { scale: 1.2, duration: 2, ease: "power2.out" }, 0);
+            
+            startCounter();
+        }
+
+        // 4. CONTADOR DE DIAS EXATO
+        function startCounter() {
+            const startDate = new Date("June 7, 2025");
+            const now = new Date();
+            
+            // Se a data for futura (como no exemplo 2025), calculamos baseado na data atual simulada ou real
+            // Assumindo que você quer a contagem real até HOJE a partir de 07/06/2025.
+            const diffTime = Math.abs(now - startDate);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            const counterElement = document.getElementById('days-counter');
+            let current = 0;
+            
+            // Animação numérica
+            const obj = { val: 0 };
+            gsap.to(obj, {
+                val: diffDays,
+                duration: 2.5,
+                ease: "power2.out",
+                onUpdate: function() {
+                    counterElement.innerText = Math.ceil(obj.val);
+                }
+            });
+        }
+
+        // 5. CURSOR MAGNÉTICO PERSONALIZADO
+        const cursorDot = document.querySelector('[data-cursor-dot]');
+        const cursorOutline = document.querySelector('[data-cursor-outline]');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // O ponto segue instantaneamente
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // O círculo segue com um leve delay (animate via gsap for smoothness)
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Hover Effect
+        const hoverElements = document.querySelectorAll('a, button, .value-card, .timeline-item');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        });
+
+        // 6. SCROLL TRIGGER ANIMATIONS
+        
+        // Animação da Timeline (Preenchimento da linha)
+        gsap.to('.timeline-line', {
+            height: '100%',
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".timeline-section",
+                start: "top center",
+                end: "bottom center",
+                scrub: 1
+            }
+        });
+
+        // Animação dos Itens da Timeline
+        gsap.utils.toArray('.timeline-item').forEach((item, i) => {
+            gsap.from(item, {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: item,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        });
+
+        // Animação dos Cards de Valores (Stagger)
+        gsap.from('.value-card', {
+            y: 100,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.2,
+            scrollTrigger: {
+                trigger: ".values-grid",
+                start: "top 80%"
+            }
+        });
+
+        // Parallax da Imagem de Introdução
+        gsap.to('.intro-visual img', {
+            yPercent: 20,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".intro-section",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // 7. CANVAS PARTICLE SYSTEM (POEIRA DE OURO)
+        const canvas = document.getElementById('noise-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.2; // Velocidade muito lenta
+                this.vy = (Math.random() - 0.5) * 0.2;
+                this.size = Math.random() * 2;
+                this.alpha = Math.random() * 0.5;
+                this.baseAlpha = this.alpha;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Loop infinito
+                if (this.x < 0) this.x = width;
+                if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height;
+                if (this.y > height) this.y = 0;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Criar partículas
+        for(let i = 0; i < 150; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+    </script>
+</body>
+</html>
