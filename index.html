@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,400&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
     
-    <!-- GSAP & Plugins (A Melhor Biblioteca de Animação do Mundo) -->
+    <!-- GSAP & Plugins -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
@@ -25,8 +25,10 @@
             --bg-light: #111111;
             --text-main: #f0f0f0;
             --text-muted: #888888;
-            --gold: #d4af37;
-            --gold-dim: #8a7020;
+            /* TROCA: AMARELO -> ROXO */
+            --gold: #9d4edd;        /* Roxo vibrante */
+            --gold-dim: #5a189a;    /* Roxo escuro */
+            
             --font-display: 'Cinzel', serif;
             --font-body: 'Cormorant Garamond', serif;
             --font-ui: 'Montserrat', sans-serif;
@@ -37,7 +39,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none; /* Cursor customizado ativado */
+            /* REMOVIDO: cursor: none; (Cursor padrão restaurado) */
         }
 
         body {
@@ -50,42 +52,7 @@
         }
 
         /* =========================================
-           2. CURSOR PERSONALIZADO
-           ========================================= */
-        .cursor-dot,
-        .cursor-outline {
-            position: fixed;
-            top: 0;
-            left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 9999;
-            pointer-events: none;
-        }
-
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--gold);
-        }
-
-        .cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(212, 175, 55, 0.5);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
-        }
-
-        /* Hover State for Links/Buttons */
-        body.hovering .cursor-outline {
-            width: 60px;
-            height: 60px;
-            background-color: rgba(212, 175, 55, 0.1);
-            border-color: var(--gold);
-        }
-
-        /* =========================================
-           3. ESTRUTURA GERAL
+           2. ESTRUTURA GERAL
            ========================================= */
         section {
             position: relative;
@@ -96,6 +63,7 @@
             justify-content: center;
             overflow: hidden;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 60px 0; /* Padding extra para mobile */
         }
 
         .container {
@@ -119,11 +87,12 @@
         }
 
         /* =========================================
-           4. HERO SECTION (CAPA)
+           3. HERO SECTION (CAPA)
            ========================================= */
         .hero {
             height: 100vh;
             background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            padding: 0; /* Hero ocupa tela cheia */
         }
 
         .hero-bg-img {
@@ -143,24 +112,26 @@
             text-align: center;
             z-index: 3;
             mix-blend-mode: screen;
+            width: 100%;
         }
 
         .date-stamp {
             font-family: var(--font-ui);
-            font-size: 0.9rem;
-            letter-spacing: 8px;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            letter-spacing: 6px;
             color: var(--gold);
             text-transform: uppercase;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             display: inline-block;
             border-top: 1px solid var(--gold);
             border-bottom: 1px solid var(--gold);
-            padding: 10px 20px;
+            padding: 8px 16px;
         }
 
         .main-title {
             font-family: var(--font-display);
-            font-size: clamp(3rem, 12vw, 10rem);
+            /* clamp(min, preferred, max) para responsividade automática de fonte */
+            font-size: clamp(2.5rem, 10vw, 8rem); 
             line-height: 0.9;
             font-weight: 400;
             color: #fff;
@@ -173,7 +144,7 @@
         .days-display {
             font-family: var(--font-ui);
             font-weight: 200;
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
             color: var(--text-muted);
             letter-spacing: 2px;
         }
@@ -181,13 +152,13 @@
         .days-display span {
             color: var(--gold);
             font-weight: 600;
-            font-size: 1.4rem;
+            font-size: clamp(1.2rem, 3vw, 1.4rem);
             margin: 0 5px;
         }
 
         .scroll-indicator {
             position: absolute;
-            bottom: 40px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -223,7 +194,7 @@
         }
 
         /* =========================================
-           5. SEÇÃO DE INTRODUÇÃO (SPLIT)
+           4. SEÇÃO DE INTRODUÇÃO (SPLIT)
            ========================================= */
         .intro-section {
             background-color: var(--bg-light);
@@ -232,20 +203,20 @@
         .split-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 80px;
+            gap: clamp(30px, 5vw, 80px);
             align-items: center;
         }
 
         .intro-text h2 {
             font-family: var(--font-display);
-            font-size: 3rem;
+            font-size: clamp(2rem, 5vw, 3rem);
             color: var(--gold);
             margin-bottom: 30px;
             line-height: 1.1;
         }
 
         .intro-text p {
-            font-size: 1.5rem;
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
             line-height: 1.8;
             color: var(--text-muted);
             font-weight: 300;
@@ -271,7 +242,7 @@
         .intro-visual {
             position: relative;
             width: 100%;
-            height: 500px;
+            height: 400px; /* Altura fixa melhor para mobile */
             border: 1px solid rgba(255,255,255,0.1);
             overflow: hidden;
         }
@@ -280,25 +251,25 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: sepia(0.5);
+            filter: sepia(0.5) hue-rotate(240deg) saturate(0.8); /* Tom arroxeado na imagem */
         }
 
         /* =========================================
-           6. TIMELINE VERTICAL (LINHA DO TEMPO)
+           5. TIMELINE VERTICAL (LINHA DO TEMPO)
            ========================================= */
         .timeline-section {
             background-color: var(--bg-deep);
-            padding: 150px 0;
+            padding: 100px 0;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 100px;
+            margin-bottom: 80px;
         }
 
         .section-header h2 {
             font-family: var(--font-display);
-            font-size: 3rem;
+            font-size: clamp(2rem, 5vw, 3rem);
             color: var(--gold);
             margin-bottom: 20px;
         }
@@ -324,7 +295,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 100px;
+            margin-bottom: clamp(60px, 10vw, 100px);
             position: relative;
         }
 
@@ -335,11 +306,11 @@
         .timeline-date {
             width: 45%;
             font-family: var(--font-ui);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--gold);
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            padding: 20px;
+            padding: 10px;
             text-align: right;
         }
 
@@ -364,13 +335,13 @@
 
         .timeline-content h3 {
             font-family: var(--font-display);
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin-bottom: 15px;
             color: #fff;
         }
 
         .timeline-content p {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--text-muted);
             line-height: 1.6;
         }
@@ -396,27 +367,28 @@
         }
 
         /* =========================================
-           7. SEÇÃO DE VALORES (GRID 3D)
+           6. SEÇÃO DE VALORES (GRID 3D)
            ========================================= */
         .values-section {
             background: var(--bg-light);
-            padding: 150px 0;
+            padding: 100px 0;
         }
 
         .values-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
             margin-top: 50px;
         }
 
         .value-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 40px;
+            padding: 30px 20px;
             transition: transform 0.4s var(--ease-out-expo), border-color 0.4s;
             position: relative;
             overflow: hidden;
+            text-align: center;
         }
 
         .value-card:hover {
@@ -426,7 +398,7 @@
 
         .value-number {
             font-family: var(--font-display);
-            font-size: 4rem;
+            font-size: 3rem;
             color: rgba(255, 255, 255, 0.03);
             position: absolute;
             top: 10px;
@@ -443,7 +415,7 @@
 
         .value-card h3 {
             font-family: var(--font-ui);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 15px;
@@ -452,17 +424,25 @@
 
         .value-card p {
             color: var(--text-muted);
-            font-size: 1rem;
+            font-size: 0.95rem;
             line-height: 1.6;
         }
 
         /* =========================================
-           8. SEÇÃO DE CITAÇÃO MASSIVA
+           7. SEÇÃO DE CITAÇÃO MASSIVA
            ========================================= */
         .quote-section {
             background: url('img3.jpeg') center/cover fixed;
-            height: 80vh;
+            height: 70vh;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Caso a imagem não carregue, fundo roxo escuro */
+        .quote-section:not([style*="background-image"]) {
+            background: var(--bg-deep);
         }
 
         .quote-overlay {
@@ -476,11 +456,12 @@
             z-index: 2;
             max-width: 900px;
             text-align: center;
+            padding: 0 20px;
         }
 
         .quote-text blockquote {
             font-family: var(--font-body);
-            font-size: clamp(2rem, 5vw, 4rem);
+            font-size: clamp(1.5rem, 4vw, 3.5rem);
             font-style: italic;
             line-height: 1.2;
             color: #fff;
@@ -490,26 +471,26 @@
         .quote-text cite {
             font-family: var(--font-ui);
             font-style: normal;
-            font-size: 1rem;
+            font-size: 0.9rem;
             letter-spacing: 3px;
             color: var(--gold);
             text-transform: uppercase;
         }
 
         /* =========================================
-           9. CARTA FINAL
+           8. CARTA FINAL
            ========================================= */
         .letter-section {
             background-color: #f4f1ea; /* Tom de papel antigo */
             color: #2c2c2c;
-            padding: 100px 20px;
+            padding: 80px 20px;
         }
 
         .letter-paper {
             max-width: 700px;
             margin: 0 auto;
             background: #fff;
-            padding: 60px;
+            padding: 40px 20px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.1);
             position: relative;
         }
@@ -519,22 +500,22 @@
             content: '';
             position: absolute;
             top: 10px; left: 10px; right: 10px; bottom: 10px;
-            border: 1px solid #d4af37;
+            border: 1px solid #9d4edd; /* Borda roxa */
             pointer-events: none;
         }
 
         .letter-paper h2 {
             font-family: var(--font-display);
             text-align: center;
-            font-size: 2.5rem;
-            color: var(--gold-dim);
-            margin-bottom: 40px;
+            font-size: 2rem;
+            color: #5a189a;
+            margin-bottom: 30px;
         }
 
         .letter-content {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem;
-            line-height: 2;
+            font-size: 1.1rem;
+            line-height: 1.8;
             color: #444;
         }
 
@@ -543,15 +524,15 @@
         }
 
         .signature {
-            margin-top: 50px;
+            margin-top: 40px;
             text-align: right;
             font-family: 'Cinzel', serif;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: #000;
         }
 
         /* =========================================
-           10. FOOTER
+           9. FOOTER
            ========================================= */
         footer {
             background-color: #000;
@@ -562,7 +543,7 @@
 
         .footer-logo {
             font-family: var(--font-display);
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: #fff;
             margin-bottom: 20px;
             display: block;
@@ -576,7 +557,7 @@
         }
 
         /* =========================================
-           11. LOADING SCREEN
+           10. LOADING SCREEN
            ========================================= */
         .loader-screen {
             position: fixed;
@@ -604,7 +585,7 @@
             top: 0; left: 0;
             height: 100%;
             width: 0%;
-            background: var(--gold);
+            background: var(--gold); /* Roxo */
             transition: width 0.2s;
         }
 
@@ -616,26 +597,65 @@
         }
 
         /* =========================================
-           12. RESPONSIVIDADE
+           11. RESPONSIVIDADE (MOBILE FIRST ADJUSTMENTS)
            ========================================= */
         @media (max-width: 900px) {
-            .split-grid { grid-template-columns: 1fr; }
-            .timeline-line { left: 20px; }
-            .timeline-item, .timeline-item:nth-child(even) { flex-direction: column; align-items: flex-start; padding-left: 50px; }
-            .timeline-date, .timeline-item:nth-child(even) .timeline-date { width: 100%; text-align: left; padding: 0; margin-bottom: 10px; }
-            .timeline-content, .timeline-item:nth-child(even) .timeline-content { width: 100%; text-align: left; padding: 0; border: none; }
-            .timeline-dot { left: 20px; }
-            .hero-bg-img { opacity: 0.2; }
-            .letter-paper { padding: 30px; }
-        }
+            /* Introdução */
+            .split-grid { 
+                grid-template-columns: 1fr; 
+                text-align: center;
+            }
+            
+            .intro-text { order: 2; } /* Texto abaixo da imagem no mobile se preferir, ou remova para manter acima */
+            .intro-visual { order: 1; margin-bottom: 20px; height: 300px;}
 
+            /* Timeline Mobile: Linha à esquerda */
+            .timeline-container { padding-left: 20px; }
+            .timeline-line { left: 20px; }
+            
+            .timeline-item, 
+            .timeline-item:nth-child(even) { 
+                flex-direction: column; 
+                align-items: flex-start; 
+                padding-left: 30px; 
+                margin-bottom: 60px;
+            }
+
+            .timeline-date, 
+            .timeline-item:nth-child(even) .timeline-date { 
+                width: 100%; 
+                text-align: left; 
+                padding: 0; 
+                margin-bottom: 10px; 
+                padding-left: 20px;
+            }
+
+            .timeline-content, 
+            .timeline-item:nth-child(even) .timeline-content { 
+                width: 100%; 
+                text-align: left; 
+                padding: 0; 
+                border: none; 
+                padding-left: 20px;
+            }
+
+            .timeline-dot { 
+                left: 20px; 
+                top: 10px; /* Alinha com o topo do conteúdo */
+                transform: translate(-50%, 0);
+            }
+
+            .hero-bg-img { opacity: 0.2; }
+            .letter-paper { padding: 30px 15px; }
+            
+            /* Ajuste de Quote */
+            .quote-section {
+                background-attachment: scroll; /* Melhor performance em mobile */
+            }
+        }
     </style>
 </head>
 <body>
-
-    <!-- ELEMENTOS DE CURSOR -->
-    <div class="cursor-dot" data-cursor-dot></div>
-    <div class="cursor-outline" data-cursor-outline></div>
 
     <!-- TELA DE CARREGAMENTO -->
     <div class="loader-screen" id="loader">
@@ -650,7 +670,9 @@
 
     <!-- 1. HERO SECTION -->
     <header class="hero">
-        <img src="img4.jpeg" alt="Luxo Love" class="hero-bg-img">
+        <!-- Imagem de fundo - Se não tiver a imagem, ficará escuro com gradiente -->
+        <img src="img4.jpeg" alt="Luxo Love" class="hero-bg-img" onerror="this.style.display='none'">
+        
         <div class="container hero-content">
             <span class="date-stamp">07 . 06 . 25</span>
             <h1 class="main-title">Nossa<br>Jornada</h1>
@@ -672,14 +694,14 @@
     <section class="intro-section">
         <div class="container">
             <div class="split-grid">
+                <div class="intro-visual">
+                    <img src="img1.jpeg" alt="Abstract Love" onerror="this.style.display='none'">
+                </div>
                 <div class="intro-text text-left">
                     <h2>O Início de<br>Tudo</h2>
                     <p>Nem tudo são flores. O que nós construímos foi muito mais valioso: uma base sólida de respeito e admiração mútua.</p>
                     <p>O dia 7 de junho foi o ponto de partida, mas cada dia desde então tem sido uma escolha consciente de continuar caminhando juntos.</p>
                     <p>Como dizem os grandes amores: não é sobre não ter problemas, é sobre ter a certeza de que, <span class="highlight">com você, eu consigo resolver qualquer um.</span></p>
-                </div>
-                <div class="intro-visual">
-                    <img src="img1.jpeg" alt="Abstract Love">
                 </div>
             </div>
         </div>
@@ -731,7 +753,7 @@
                     <div class="timeline-date">SETEMBRO 2025</div>
                     <div class="timeline-content">
                         <div class="timeline-dot"></div>
-                        <h3>A Supercação</h3>
+                        <h3>A Superação</h3>
                         <p>Enfrentamos os primeiros desafios reais e saímos mais fortes. A parceria foi consolidada.</p>
                     </div>
                 </div>
@@ -742,7 +764,7 @@
                     <div class="timeline-content">
                         <div class="timeline-dot"></div>
                         <h3>A Eternidade</h3>
-                        <p>Aqui estamos hoje, não como duas pessoas separadas, mas como namorados pronta para o que vier.</p>
+                        <p>Aqui estamos hoje, não como duas pessoas separadas, mas como namorados prontos para o que vier.</p>
                     </div>
                 </div>
 
@@ -822,13 +844,13 @@
 
     <script>
         // =========================================
-        // JAVASCRIPT: LÓGICA COMPLETA DO SITE
+        // JAVASCRIPT: LÓGICA ATUALIZADA
         // =========================================
 
         // 1. REGISTRO DE PLUGINS GSAP
         gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-        // 2. SMOOTH SCROLL (LENIS)
+        // 2. SMOOTH SCROLL (LENIS) - Configuração Otimizada
         const lenis = new Lenis({
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -836,7 +858,7 @@
             gestureDirection: 'vertical',
             smooth: true,
             mouseMultiplier: 1,
-            smoothTouch: false,
+            smoothTouch: false, // Mantém scroll nativo no touch para melhor sensação mobile
             touchMultiplier: 2,
         });
 
@@ -887,15 +909,12 @@
             const startDate = new Date("June 7, 2025");
             const now = new Date();
             
-            // Se a data for futura (como no exemplo 2025), calculamos baseado na data atual simulada ou real
-            // Assumindo que você quer a contagem real até HOJE a partir de 07/06/2025.
             const diffTime = Math.abs(now - startDate);
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
             const counterElement = document.getElementById('days-counter');
             let current = 0;
             
-            // Animação numérica
             const obj = { val: 0 };
             gsap.to(obj, {
                 val: diffDays,
@@ -907,31 +926,7 @@
             });
         }
 
-        // 5. CURSOR MAGNÉTICO PERSONALIZADO
-        const cursorDot = document.querySelector('[data-cursor-dot]');
-        const cursorOutline = document.querySelector('[data-cursor-outline]');
-
-        window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX;
-            const posY = e.clientY;
-
-            // O ponto segue instantaneamente
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
-
-            // O círculo segue com um leve delay (animate via gsap for smoothness)
-            cursorOutline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 500, fill: "forwards" });
-        });
-
-        // Hover Effect
-        const hoverElements = document.querySelectorAll('a, button, .value-card, .timeline-item');
-        hoverElements.forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-        });
+        // 5. REMOVIDO: Lógica do Cursor Customizado (Solicitação do Usuário)
 
         // 6. SCROLL TRIGGER ANIMATIONS
         
@@ -985,7 +980,7 @@
             }
         });
 
-        // 7. CANVAS PARTICLE SYSTEM (POEIRA DE OURO)
+        // 7. CANVAS PARTICLE SYSTEM (POEIRA ROXA)
         const canvas = document.getElementById('noise-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -1002,7 +997,7 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.2; // Velocidade muito lenta
+                this.vx = (Math.random() - 0.5) * 0.2;
                 this.vy = (Math.random() - 0.5) * 0.2;
                 this.size = Math.random() * 2;
                 this.alpha = Math.random() * 0.5;
@@ -1013,7 +1008,6 @@
                 this.x += this.vx;
                 this.y += this.vy;
 
-                // Loop infinito
                 if (this.x < 0) this.x = width;
                 if (this.x > width) this.x = 0;
                 if (this.y < 0) this.y = height;
@@ -1021,15 +1015,18 @@
             }
 
             draw() {
-                ctx.fillStyle = `rgba(212, 175, 55, ${this.alpha})`;
+                // ATUALIZADO: Cor Roxa (157, 78, 221)
+                ctx.fillStyle = `rgba(157, 78, 221, ${this.alpha})`;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        // Criar partículas
-        for(let i = 0; i < 150; i++) {
+        // Criar partículas (Menos partículas para mobile para performance)
+        const particleCount = window.innerWidth < 768 ? 50 : 150;
+        
+        for(let i = 0; i < particleCount; i++) {
             particles.push(new Particle());
         }
 
